@@ -1,0 +1,17 @@
+from flask import Flask, request, jsonify
+import ollama
+
+app = Flask(__name__)
+
+@app.route('/chatbot', methods=['POST'])
+def chatbot():
+    user_message = request.json.get('message')
+    
+    # Chiamata al modello Ollama
+    response = ollama.chat(model="gpt-4", messages=[{"role": "user", "content": user_message}])
+    
+    # Restituisce la risposta del chatbot
+    return jsonify({'reply': response['text']})
+
+if __name__ == '__main__':
+    app.run(debug=True)
